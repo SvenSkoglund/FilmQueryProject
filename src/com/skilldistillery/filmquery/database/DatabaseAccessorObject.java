@@ -30,17 +30,29 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	@Override
 	public Film getFilmById(int filmId) throws SQLException {
 		Film film = null;
-		String sql = "select f.id, title, description, release_year, language_id, rental_duration, rental_rate, length, replacement_cost, rating, special_features, l.id from film f join language l on l.id = language_id where f.id = ?";
+		String sql = "select f.id, title, description, release_year, language_id, rental_duration, rental_rate, length, replacement_cost, rating, special_features, l.name from film f join language l on l.id = language_id where f.id = ?";
 		Connection conn = DriverManager.getConnection(URL, user, pass);
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setInt(1, filmId);
 		ResultSet rs = ps.executeQuery();
+		
+		int counter = 0;
 		while (rs.next()) {
 			film = new Film(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getInt(6),
 					rs.getDouble(7), rs.getInt(8), rs.getDouble(9), rs.getString(10), rs.getString(11),
 					rs.getString(12));
+			counter++;
+		}
+		if (counter == 0) {
+			rs.close();
+			ps.close();
+			conn.close();
+			return null;
 		}
 		film.setActors(getActorsByFilmId(filmId));
+		rs.close();
+		ps.close();
+		conn.close();
 		return film;
 	}
 
@@ -52,13 +64,25 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		ps.setString(1, "%" + keyword + "%");
 		ps.setString(2, "%" + keyword + "%");
 		ResultSet rs = ps.executeQuery();
+		
+		int counter = 0;
 		while (rs.next()) {
 			Film film = new Film(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5),
 					rs.getInt(6), rs.getDouble(7), rs.getInt(8), rs.getDouble(9), rs.getString(10), rs.getString(11),
 					rs.getString(12));
 			films.add(film);
+			counter++;
 		}
-		// film.setActors(getActorsByFilmId(filmId));
+		if (counter == 0) {
+			System.out.println("No matching films");
+			rs.close();
+			ps.close();
+			conn.close();
+			return null;
+		}
+		rs.close();
+		ps.close();
+		conn.close();
 		return films;
 	}
 
@@ -71,9 +95,14 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		ps.setInt(1, actorId);
 		ResultSet rs = ps.executeQuery();
 		while (rs.next()) {
+			rs.close();
+			ps.close();
+			conn.close();
 			actor = new Actor(rs.getInt(1), rs.getString(2), rs.getString(3));
 		}
-
+		rs.close();
+		ps.close();
+		conn.close();
 		return actor;
 	}
 
@@ -86,11 +115,22 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setInt(1, filmId);
 		ResultSet rs = ps.executeQuery();
+		int counter = 0;
 		while (rs.next()) {
 			actor = new Actor(rs.getInt(1), rs.getString(2), rs.getString(3));
 			actors.add(actor);
+			counter++;
 		}
-
+		if (counter ==0) {
+			System.out.println("No actors found");
+			rs.close();
+			ps.close();
+			conn.close();
+			return null;
+		}
+		rs.close();
+		ps.close();
+		conn.close();
 		return actors;
 	}
 }
