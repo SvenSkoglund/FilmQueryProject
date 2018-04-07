@@ -74,12 +74,23 @@ public class Film {
 
 	
 	
+	public void printFilm(){
+		System.out.println("*****************************");
+		System.out.println("       "+getTitle());
+		System.out.println(getDescription());
+		System.out.println("       "+getRating());
+		System.out.println();
+
+
+		System.out.println("*****************************");
+	}
+
 	@Override
 	public String toString() {
-		return "Id:" + id + ", Title: " + title + ", \nDescription: " + description + "\nRelease Year: " + releaseYear
-				+ "\nLanguage: " + language + ", Rental Duration: " + rentalDuration + ", Rental Rate: " + rentalRate
-				+ "\nLength: " + length + ", Replacement Cost: " + replacementCost + ", Rating: " + rating
-				+ "\nspecialFeatures: " + specialFeatures + "\nCast: " + actors;
+		return "ID = " + id + ", Title = " + title + ", Description = " + description + ", Release Year = " + releaseYear
+				+ ", Language = " + language + ", Rental Duration = " + rentalDuration + ", Rental Rate = " + rentalRate
+				+ ", Length = " + length + ", Replacement Cost = " + replacementCost + ", Rating = " + rating
+				+ ", Special Features = " + specialFeatures + ", Cast = " + actors ;
 	}
 
 	public int getId() {
