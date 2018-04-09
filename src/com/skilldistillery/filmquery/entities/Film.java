@@ -76,11 +76,13 @@ public class Film {
 	
 	public void printFilm(){
 		System.out.println("*****************************");
-		System.out.println("       "+getTitle());
-		System.out.println(getDescription());
-		System.out.println("       "+getRating());
-		System.out.println();
-
+		System.out.println("*       "+getTitle());
+		System.out.println("* "+getDescription());
+		System.out.println("* Rating: "+getRating());
+		System.out.println("* Language: "+getLanguage());
+		System.out.println("* Length: "+getLength() +" minutes");
+		System.out.println("* Rating: "+getRating());
+		System.out.println("* Cast: "+getActors());
 
 		System.out.println("*****************************");
 	}

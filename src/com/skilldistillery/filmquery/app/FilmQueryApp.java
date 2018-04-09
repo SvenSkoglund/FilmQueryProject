@@ -68,32 +68,35 @@ public class FilmQueryApp {
 
 	private void menuSelection(int entry, Scanner input) throws SQLException {
 		try {
-		switch (entry) {
-		case 1:
-			System.out.println("Enter the film ID");
-			int filmID = input.nextInt();
-			Film film = db.getFilmById(filmID);
-			if (film == null) {
-				System.out.println("Film not found");
+			switch (entry) {
+			case 1:
+				System.out.println("Enter the film ID");
+				int filmID = input.nextInt();
+				Film film = db.getFilmById(filmID);
+				if (film == null) {
+					System.out.println("Film not found");
+					break;
+				}
+				film.printFilm();
 				break;
-			}
-			System.out.println(film);
-			break;
-		case 2:
-			System.out.println("Enter the keyword to search");
-			String keyword = input.next();
-			List<Film> films = db.getFilmsByKeyword(keyword);
-			if (films == null) {
-				System.out.println("Film not found");
+			case 2:
+				System.out.println("Enter the keyword to search");
+				String keyword = input.next();
+				List<Film> films = db.getFilmsByKeyword(keyword);
+				if (films == null) {
+					System.out.println("Film not found");
+					break;
+				}
+				for (Film filmToPrint: films) {
+					filmToPrint.printFilm();
+				}
 				break;
+			case 0:
+				System.out.println("Goodbye");
+				System.exit(1);
 			}
-			System.out.println(films);
-			break;
-		case 0:
-			System.out.println("Goodbye");
-			System.exit(1);
 		}
-		}catch (SQLException e) {
+		catch (SQLException e) {
 			System.err.println("SQL ERROR. GOODBYE");
 			System.exit(1);
 		}
